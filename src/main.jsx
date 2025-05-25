@@ -20,7 +20,7 @@ import FacultyPage from './pages/FacultyPage.jsx';
 // 👇 Add this line to import AuthProvider
 import { AuthProvider } from './context/AuthContext.jsx';
 import AttemptTestPro from './pages/test/attempttestpro.jsx';
-import StudentMyProfile from './pages/student/StudentMyProfile.jsx';
+import StudentMyProfile from '/src/pages/test/AttemptTestPro.jsx';
 import StudentMyTest from './pages/student/StudentMyTest.jsx';
 import StudentResultDownload from './pages/student/StudentResultDownload.jsx';
 
