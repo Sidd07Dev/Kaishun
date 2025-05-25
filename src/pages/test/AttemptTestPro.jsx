@@ -53,7 +53,7 @@ const dummyQuestions = [
   },
 ];
 
-const AttemptTestTCS = () => {
+const AttemptTestPro = () => {
   const totalTime = 15 * 60; // 15 minutes
   const [timeLeft, setTimeLeft] = useState(totalTime);
   const [currentQIndex, setCurrentQIndex] = useState(0);
@@ -295,4 +295,4 @@ const AttemptTestTCS = () => {
   );
 };
 
-export default AttemptTestTCS;
+export default AttemptTestPro;

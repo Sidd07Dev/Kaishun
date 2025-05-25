@@ -23,7 +23,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import StudentMyProfile from './pages/student/StudentMyProfile.jsx';
 import StudentMyTest from './pages/student/StudentMyTest.jsx';
 import StudentResultDownload from './pages/student/StudentResultDownload.jsx';
-import AttemptTestTCS from './pages/test/attempttestpro.jsx';
+import AttemptTestPro from './pages/test/attempttestpro.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,7 +37,7 @@ const router = createBrowserRouter(
       <Route path='placements' element={<PlacedStudents />} />
       <Route path='test' element={<TestSection />} />
       <Route path='faculty' element={<FacultyPage />} />
-      <Route path='test/attempt' element={<AttemptTestTCS />} />
+      <Route path='test/attempt' element={<AttemptTestPro />} />
       <Route path='student/profile' element={<StudentMyProfile />} />
       <Route path='student/tests' element={<StudentMyTest />} />
       <Route path='student/downloads' element={<StudentResultDownload/>} />
