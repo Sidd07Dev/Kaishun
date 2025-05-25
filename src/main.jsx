@@ -23,7 +23,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import StudentMyProfile from './pages/student/StudentMyProfile.jsx';
 import StudentMyTest from './pages/student/StudentMyTest.jsx';
 import StudentResultDownload from './pages/student/StudentResultDownload.jsx';
-import AttemptTestPro from './pages/test/attempttestpro.jsx';
+import AttemptTestPro from 'src/pages/test/attempttestpro.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
