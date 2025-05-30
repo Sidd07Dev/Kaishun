@@ -3,7 +3,12 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 
 import React from 'react';
-import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+  Route,
+} from 'react-router-dom';
 
 import Layout from './Layout.jsx';
 
@@ -17,13 +22,17 @@ import PlacedStudents from './pages/placedStudents.jsx';
 import TestSection from './pages/TestSection.jsx';
 import FacultyPage from './pages/FacultyPage.jsx';
 
-// 👇 Add this line to import AuthProvider
+// Auth Context
 import { AuthProvider } from './context/AuthContext.jsx';
 
+// Student Pages
 import StudentMyProfile from './pages/student/StudentMyProfile.jsx';
 import StudentMyTest from './pages/student/StudentMyTest.jsx';
 import StudentResultDownload from './pages/student/StudentResultDownload.jsx';
 import AttemptTestPro from './pages/test/AttemptTestPro.jsx';
+
+// Protected route wrapper
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,17 +46,35 @@ const router = createBrowserRouter(
       <Route path='placements' element={<PlacedStudents />} />
       <Route path='test' element={<TestSection />} />
       <Route path='faculty' element={<FacultyPage />} />
-      <Route path='test/attempt' element={<AttemptTestPro />} />
-      <Route path='student/profile' element={<StudentMyProfile />} />
-      <Route path='student/tests' element={<StudentMyTest />} />
-      <Route path='student/downloads' element={<StudentResultDownload/>} />
+
+      {/* ✅ Protected Routes */}
+      <Route path='test/attempt/:testId' element={
+        <ProtectedRoute>
+          <AttemptTestPro />
+        </ProtectedRoute>
+      } />
+      <Route path='student/profile' element={
+        <ProtectedRoute>
+          <StudentMyProfile />
+        </ProtectedRoute>
+      } />
+      <Route path='student/tests' element={
+        <ProtectedRoute>
+          <StudentMyTest />
+        </ProtectedRoute>
+      } />
+      <Route path='student/downloads' element={
+        <ProtectedRoute>
+          <StudentResultDownload />
+        </ProtectedRoute>
+      } />
     </Route>
   )
 );
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider> {/* ✅ Wrap entire app */}
+    <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>

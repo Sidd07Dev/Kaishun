@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 
@@ -9,8 +9,11 @@ import LatestUpdates from '../components/LatestUpdates';
 import TopPerformers from '../components/TopPerformers';
 import Testimonials from '../components/Testimonials';
 import CampaignCarousel from '../components/CampaignCarousel';
+import LogoLoader from '../components/LogoLoader';
 
 function HomePage() {
+
+
   return( 
     <>
     <Hero/>

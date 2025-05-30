@@ -24,7 +24,7 @@ const Hero = () => {
               Explore Courses
             </Link>
             <Link
-              to="/register"
+              to="/signup"
               className="px-6 py-3 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition text-lg font-medium"
             >
               Register Now

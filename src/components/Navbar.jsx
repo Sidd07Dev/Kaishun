@@ -23,9 +23,12 @@ const Navbar = () => {
     <header className="bg-white shadow-md fixed w-full top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="text-xl font-bold text-blue-600">
-          Kai<span className="text-gray-800">shun</span>
-        </Link>
+        <Link to="/" className="flex items-center space-x-2 text-xl font-bold text-blue-600">
+    {/* <img src="../public/icon.png" alt="Logo" className="w-full h-7" /> */}
+    <span>
+      Kai<span className="text-gray-800">shun</span>
+    </span>
+  </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-6 items-center">

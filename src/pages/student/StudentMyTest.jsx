@@ -1,6 +1,6 @@
 import React from 'react';
 import { FileText, PlayCircle, CheckCircle, XCircle, Eye } from 'lucide-react';
-
+import { Navigate } from 'react-router-dom';
 const dummyTests = [
   {
     id: 1,
@@ -27,8 +27,9 @@ const dummyTests = [
 
 const StudentMyTest = () => {
   const handleStartTest = (testId) => {
-    alert(`Redirecting to start test ID: ${testId}`);
+   
     // You can use navigate(`/test/start/${testId}`) if using react-router
+    return <Navigate to="/test/attempt/188e2762e" replace />;
   };
 
   const handleViewResult = (testId) => {

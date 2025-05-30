@@ -17,7 +17,7 @@ const Footer = () => {
         {/* Company Info */}
         <div className="space-y-4">
           <h1 className="text-3xl font-extrabold text-white tracking-wide">
-            JobPrep Centre
+           Kaishun
           </h1>
           <p className="text-sm leading-relaxed">
             Empowering your government job dreams with expert coaching, latest
@@ -105,7 +105,7 @@ const Footer = () => {
           <ul className="space-y-4 text-sm">
             <li className="flex items-center gap-3">
               <MapPin className="w-5 h-5 text-indigo-500" />
-              <span>IGIT College Road, Sarang, Odisha</span>
+              <span>Panchyat College Road, Bargarh, Odisha</span>
             </li>
             <li className="flex items-center gap-3">
               <Phone className="w-5 h-5 text-indigo-500" />
@@ -113,7 +113,7 @@ const Footer = () => {
             </li>
             <li className="flex items-center gap-3">
               <Mail className="w-5 h-5 text-indigo-500" />
-              <span>info@jobcoachcenter.in</span>
+              <span>Kaishun@gmail.com</span>
             </li>
           </ul>
         </div>
@@ -142,7 +142,7 @@ const Footer = () => {
       </div>
 
       <div className="border-t border-gray-800 mt-12 pt-6 text-center text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} JobPrep Centre. All rights reserved.
+        &copy; {new Date().getFullYear()} Kaishun Institute Of Study. All rights reserved.
       </div>
     </footer>
   );

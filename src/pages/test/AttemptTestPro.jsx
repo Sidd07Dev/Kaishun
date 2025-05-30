@@ -1,67 +1,85 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-const dummyQuestions = [
-  {
-    id: 1,
-    question: "Which is the capital of India?",
-    options: ["Delhi", "Mumbai", "Chennai", "Kolkata"],
-  },
-  {
-    id: 2,
-    question: "Who invented the telephone?",
-    options: ["Alexander Graham Bell", "Thomas Edison", "Nikola Tesla", "Isaac Newton"],
-  },
-  {
-    id: 3,
-    question: "What is 10 + 15?",
-    options: ["20", "25", "30", "35"],
-  },
-  {
-    id: 4,
-    question: "What is the chemical symbol for water?",
-    options: ["H2O", "CO2", "NaCl", "O2"],
-  },
-  {
-    id: 5,
-    question: "Which planet is known as the Red Planet?",
-    options: ["Earth", "Venus", "Mars", "Jupiter"],
-  },
-  {
-    id: 6,
-    question: "Which is the capital of India?",
-    options: ["Delhi", "Mumbai", "Chennai", "Kolkata"],
-  },
-  {
-    id: 7,
-    question: "Who invented the telephone?",
-    options: ["Alexander Graham Bell", "Thomas Edison", "Nikola Tesla", "Isaac Newton"],
-  },
-  {
-    id: 8,
-    question: "What is 10 + 15?",
-    options: ["20", "25", "30", "35"],
-  },
-  {
-    id: 9,
-    question: "What is the chemical symbol for water?",
-    options: ["H2O", "CO2", "NaCl", "O2"],
-  },
-  {
-    id: 10,
-    question: "Which planet is known as the Red Planet?",
-    options: ["Earth", "Venus", "Mars", "Jupiter"],
-  },
-];
+// Dummy user session (you can simulate a logged-in/logged-out state)
+const dummyUser = {
+  isLoggedIn: true,
+  userId: "user_001",
+  attemptedTests: ["1232578788688"], // Already attempted test IDs
+};
+
+const dummyQuestions = [{
+  id: 1,
+  question: "Which is the capital of India?",
+  options: ["Delhi", "Mumbai", "Chennai", "Kolkata"],
+},
+{
+  id: 2,
+  question: "Who invented the telephone?",
+  options: ["Alexander Graham Bell", "Thomas Edison", "Nikola Tesla", "Isaac Newton"],
+},
+{
+  id: 3,
+  question: "What is 10 + 15?",
+  options: ["20", "25", "30", "35"],
+},
+{
+  id: 4,
+  question: "What is the chemical symbol for water?",
+  options: ["H2O", "CO2", "NaCl", "O2"],
+},
+{
+  id: 5,
+  question: "Which planet is known as the Red Planet?",
+  options: ["Earth", "Venus", "Mars", "Jupiter"],
+},
+{
+  id: 6,
+  question: "Which is the capital of India?",
+  options: ["Delhi", "Mumbai", "Chennai", "Kolkata"],
+},
+{
+  id: 7,
+  question: "Who invented the telephone?",
+  options: ["Alexander Graham Bell", "Thomas Edison", "Nikola Tesla", "Isaac Newton"],
+},
+{
+  id: 8,
+  question: "What is 10 + 15?",
+  options: ["20", "25", "30", "35"],
+},
+{
+  id: 9,
+  question: "What is the chemical symbol for water?",
+  options: ["H2O", "CO2", "NaCl", "O2"],
+},
+{
+  id: 10,
+  question: "Which planet is known as the Red Planet?",
+  options: ["Earth", "Venus", "Mars", "Jupiter"],
+},];
 
 const AttemptTestPro = () => {
-  const totalTime = 15 * 60; // 15 minutes
+  const { testId } = useParams(); // get test ID from URL
+  const navigate = useNavigate();
+
+  const totalTime = 15 * 60;
   const [timeLeft, setTimeLeft] = useState(totalTime);
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [answers, setAnswers] = useState(Array(dummyQuestions.length).fill(null));
-  const [phase, setPhase] = useState("start"); // 'start' or 'test' or 'submitted'
+  const [phase, setPhase] = useState("start");
   const timerRef = useRef(null);
 
-  // Start countdown timer when phase changes to 'test'
+  // === Access & Attempt Check ===
+  useEffect(() => {
+    if (!dummyUser.isLoggedIn) {
+      navigate("/login"); // redirect to login if not logged in
+    } else if (dummyUser.attemptedTests.includes(testId)) {
+      setPhase("already-submitted"); // show message if already attempted
+    }
+  }, [testId, navigate]);
+
+  // === Timer Logic ===
   useEffect(() => {
     if (phase !== "test") return;
 
@@ -86,47 +104,33 @@ const AttemptTestPro = () => {
     setAnswers(newAnswers);
   };
 
-  const handleSave = () => {
-    alert("Answer saved.");
-  };
-
-  const handleNext = () => {
-    if (currentQIndex < dummyQuestions.length - 1) {
-      setCurrentQIndex(currentQIndex + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentQIndex > 0) {
-      setCurrentQIndex(currentQIndex - 1);
-    }
-  };
-
-  const handleJumpToQuestion = (index) => {
-    setCurrentQIndex(index);
-  };
+  const handleSave = () => alert("Answer saved.");
+  const handleNext = () => currentQIndex < dummyQuestions.length - 1 && setCurrentQIndex(currentQIndex + 1);
+  const handlePrevious = () => currentQIndex > 0 && setCurrentQIndex(currentQIndex - 1);
+  const handleJumpToQuestion = (index) => setCurrentQIndex(index);
+  const formatTime = (seconds) => `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
 
   const handleSubmit = () => {
     clearInterval(timerRef.current);
     setPhase("submitted");
+    // In real-world, you'd send to backend and store attempt status.
   };
 
-  const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, "0");
-    const s = (seconds % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
-  };
+  // === Already Attempted Message ===
+  if (phase === "already-submitted") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-red-50 text-red-700 text-xl font-semibold">
+        You have already submitted the test.
+      </div>
+    );
+  }
 
+  // === Start & Submitted & Test Phase ===
   if (phase === "start") {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-indigo-50 px-6">
         <div className="max-w-3xl bg-white rounded-lg shadow-lg p-10 text-center">
-          <h1 className="text-4xl font-bold text-indigo-700 mb-6">Welcome to the TCS Online Test</h1>
-          <p className="mb-6 text-gray-700 text-lg leading-relaxed">
-            Please read the instructions carefully before starting the test.
-          </p>
+          <h1 className="text-4xl font-bold text-indigo-700 mb-6">Welcome to the Kaishun Online Test</h1>
           <ul className="text-left max-w-xl mx-auto text-gray-600 mb-8 space-y-2 list-disc list-inside">
             <li>Total Duration: 15 minutes</li>
             <li>There are {dummyQuestions.length} questions in this test</li>
@@ -151,9 +155,6 @@ const AttemptTestPro = () => {
       <div className="min-h-screen flex flex-col items-center justify-center bg-indigo-50 px-6">
         <div className="max-w-3xl bg-white rounded-lg shadow-lg p-10 text-center">
           <h1 className="text-4xl font-bold text-green-700 mb-6">Test Submitted Successfully!</h1>
-          <p className="mb-6 text-gray-700 text-lg leading-relaxed">
-            Thank you for completing the test.
-          </p>
           <h2 className="text-xl font-semibold mb-4">Your Answers:</h2>
           <ul className="text-left max-w-xl mx-auto space-y-2">
             {dummyQuestions.map((q, i) => (
@@ -173,20 +174,16 @@ const AttemptTestPro = () => {
     );
   }
 
-  // === Test phase UI ===
+  // === Test Phase ===
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-white pt-14 pb-16">
-      {/* Fixed header with timer */}
+    <div className="bg-gradient-to-r from-blue-50 to-white pt-13 pb-16">
       <header className="bg-indigo-700 text-white py-4 shadow-lg flex justify-between items-center px-6 md:px-12">
-       
         <div className="font-mono text-lg tracking-widest">
           Time Left: <span>{formatTime(timeLeft)}</span>
         </div>
       </header>
-
-      {/* Main content container */}
       <main className="flex flex-col md:flex-row flex-grow max-w-6xl mx-auto p-6 gap-6">
-        {/* Question & options */}
+        {/* Question Section */}
         <section className="bg-white rounded-lg shadow-md flex-grow p-6 md:w-3/4">
           <h2 className="text-xl font-semibold mb-4">
             Question {currentQIndex + 1} of {dummyQuestions.length}
@@ -196,12 +193,11 @@ const AttemptTestPro = () => {
             {dummyQuestions[currentQIndex].options.map((opt, idx) => (
               <label
                 key={idx}
-                className={`cursor-pointer flex items-center gap-3 p-3 border rounded-md
-                  ${
-                    answers[currentQIndex] === idx
-                      ? "bg-indigo-100 border-indigo-500"
-                      : "border-gray-300 hover:bg-indigo-50"
-                  }`}
+                className={`cursor-pointer flex items-center gap-3 p-3 border rounded-md ${
+                  answers[currentQIndex] === idx
+                    ? "bg-indigo-100 border-indigo-500"
+                    : "border-gray-300 hover:bg-indigo-50"
+                }`}
               >
                 <input
                   type="radio"
@@ -214,18 +210,15 @@ const AttemptTestPro = () => {
               </label>
             ))}
           </div>
-
-          {/* Navigation buttons */}
           <div className="flex justify-between mt-8">
             <button
               onClick={handlePrevious}
               disabled={currentQIndex === 0}
-              className={`px-5 py-3 rounded-md border font-semibold transition
-                ${
-                  currentQIndex === 0
-                    ? "text-gray-400 border-gray-300 cursor-not-allowed"
-                    : "border-indigo-600 text-indigo-600 hover:bg-indigo-50"
-                }`}
+              className={`px-5 py-3 rounded-md border font-semibold transition ${
+                currentQIndex === 0
+                  ? "text-gray-400 border-gray-300 cursor-not-allowed"
+                  : "border-indigo-600 text-indigo-600 hover:bg-indigo-50"
+              }`}
             >
               Previous
             </button>
@@ -238,19 +231,18 @@ const AttemptTestPro = () => {
             <button
               onClick={handleNext}
               disabled={currentQIndex === dummyQuestions.length - 1}
-              className={`px-5 py-3 rounded-md border font-semibold transition
-                ${
-                  currentQIndex === dummyQuestions.length - 1
-                    ? "text-gray-400 border-gray-300 cursor-not-allowed"
-                    : "border-indigo-600 text-indigo-600 hover:bg-indigo-50"
-                }`}
+              className={`px-5 py-3 rounded-md border font-semibold transition ${
+                currentQIndex === dummyQuestions.length - 1
+                  ? "text-gray-400 border-gray-300 cursor-not-allowed"
+                  : "border-indigo-600 text-indigo-600 hover:bg-indigo-50"
+              }`}
             >
               Next
             </button>
           </div>
         </section>
 
-        {/* Question navigation sidebar */}
+        {/* Sidebar */}
         <aside className="bg-white rounded-lg shadow-md p-6 md:w-1/4 h-fit sticky top-20">
           <h3 className="font-semibold mb-4 text-indigo-700 text-center text-lg">Navigate Questions</h3>
           <div className="grid grid-cols-5 gap-3">
@@ -258,21 +250,18 @@ const AttemptTestPro = () => {
               <button
                 key={q.id}
                 onClick={() => handleJumpToQuestion(i)}
-                className={`w-10 h-10 rounded-full border font-semibold transition
-                  ${
-                    currentQIndex === i
-                      ? "bg-indigo-600 text-white border-indigo-600"
-                      : answers[i] !== null
-                      ? "bg-green-500 text-white border-green-500"
-                      : "bg-gray-100 text-gray-600 border-gray-300 hover:bg-indigo-100"
-                  }`}
-                aria-label={`Jump to question ${i + 1}`}
+                className={`w-10 h-10 rounded-full border font-semibold transition ${
+                  currentQIndex === i
+                    ? "bg-indigo-600 text-white border-indigo-600"
+                    : answers[i] !== null
+                    ? "bg-green-500 text-white border-green-500"
+                    : "bg-gray-100 text-gray-600 border-gray-300 hover:bg-indigo-100"
+                }`}
               >
                 {i + 1}
               </button>
             ))}
           </div>
-
           <button
             onClick={() => {
               if (
@@ -289,8 +278,6 @@ const AttemptTestPro = () => {
           </button>
         </aside>
       </main>
-
-      
     </div>
   );
 };
